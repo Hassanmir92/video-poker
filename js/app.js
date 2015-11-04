@@ -65,7 +65,11 @@ myGame.prototype.dealNextHand = function(){
 
 myGame.prototype.checkHand = function(){
   var result = $('#result')
-  if(this.fullHouse()){
+  if(this.fourOfAKind()){
+    result.html("Got four of a kind, you win "+(this.bet*35))
+    console.log("Got four of a kind!");
+    this.cash += (this.bet*35)
+  }else if(this.fullHouse()){
     result.html("Got full house, you win "+(this.bet*25))
     console.log("Got full house!");
     this.cash += (this.bet*25)
@@ -163,6 +167,20 @@ myGame.prototype.fullHouse = function(){
   if(this.threeOfAKind() && this.pair()){
     return true
   }
+}
+
+myGame.prototype.fourOfAKind = function(){
+  var arr = []
+  for (var i = 0; i < this.fiveCards.length; i++) {
+    arr.push(this.fiveCards[i].split(/_/)[1])
+  };
+  for (var i = 0; i < arr.length; i++) {
+    var count = this.countInArray(arr, arr[i])
+    console.log(count)
+    if(count===4){
+      return true
+    }
+  };
 }
 
 myGame.prototype.countInArray = function(array, what) {
