@@ -65,33 +65,29 @@ myGame.prototype.dealNextHand = function(){
 
 myGame.prototype.checkHand = function(){
   var result = $('#result')
-  if(this.fourOfAKind()){
+  if(this.straightFlush()){
+    result.html("Got a straight flush, you win "+(this.bet*50))
+    this.cash += (this.bet*50)
+  }else if(this.fourOfAKind()){
     result.html("Got four of a kind, you win "+(this.bet*35))
-    console.log("Got four of a kind!");
     this.cash += (this.bet*35)
   }else if(this.fullHouse()){
     result.html("Got full house, you win "+(this.bet*25))
-    console.log("Got full house!");
     this.cash += (this.bet*25)
   }else if (this.flush()){
     result.html("Got a flush, you win "+(this.bet*15))
-    console.log("Got a flush!");
     this.cash += (this.bet*15)
   }else if(this.straight()){
     result.html("Got a straight, you win "+(this.bet*10))
-    console.log("Got a straight!");
     this.cash += (this.bet*10)
   }else if(this.threeOfAKind()){
     result.html("Got three of a kind, you win "+(this.bet*5))
-    console.log("Got three of a kind!");
     this.cash += (this.bet*5)
   }else if(this.twoPair()){
     result.html("Got two pair, you win "+(this.bet*2))
-    console.log("Got two pair");
     this.cash += (this.bet*2)
   }else if(this.pair()){
     result.html("Got a pair, you win "+(this.bet*1.5))
-    console.log("Got a pair")
     this.cash += (this.bet*1.5)
   }
   $('#cashAmount').html(this.cash)
@@ -181,6 +177,12 @@ myGame.prototype.fourOfAKind = function(){
       return true
     }
   };
+}
+
+myGame.prototype.straightFlush = function(){
+  if(this.straight() && this.flush()){
+    return true
+  }
 }
 
 myGame.prototype.countInArray = function(array, what) {
