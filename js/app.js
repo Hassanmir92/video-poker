@@ -66,7 +66,9 @@ myGame.prototype.dealNextHand = function(){
 myGame.prototype.checkHand = function(){
   var result = $('#result')
   if(this.fullHouse()){
-    
+    result.html("Got full house, you win "+(this.bet*25))
+    console.log("Got full house!");
+    this.cash += (this.bet*25)
   }else if (this.flush()){
     result.html("Got a flush, you win "+(this.bet*15))
     console.log("Got a flush!");
@@ -158,7 +160,9 @@ myGame.prototype.flush = function(){
 }
 
 myGame.prototype.fullHouse = function(){
-
+  if(this.threeOfAKind() && this.pair()){
+    return true
+  }
 }
 
 myGame.prototype.countInArray = function(array, what) {
