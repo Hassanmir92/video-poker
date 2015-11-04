@@ -66,7 +66,7 @@ myGame.prototype.dealNextHand = function(){
 myGame.prototype.checkHand = function(){
   var result = $('#result')
   if(this.fullHouse()){
-
+    
   }else if (this.flush()){
     result.html("Got a flush, you win "+(this.bet*15))
     console.log("Got a flush!");
@@ -158,7 +158,7 @@ myGame.prototype.flush = function(){
 }
 
 myGame.prototype.fullHouse = function(){
-  
+
 }
 
 myGame.prototype.countInArray = function(array, what) {
