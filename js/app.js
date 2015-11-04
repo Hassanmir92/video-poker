@@ -1,64 +1,90 @@
 var myGame = function(){
-  this.fiveCards = []
-  this.heldCards = []
+  this.fiveCards = [];
+  this.heldCards = [];
   this.allCards  = this.mapCards();
-  this.cash      = 1000
+  this.cash      = 1000;
   this.setUp();
 }
 
 myGame.prototype.setUp = function(){
+  $('#dealNext').hide()
   $('#cashAmount').html(this.cash)
   $('#playHand').on("click", this.playHand.bind(this))
   $('#dealNext').on("click", this.dealNextHand.bind(this))
 }
 
 myGame.prototype.playHand = function(){
-  this.bet = $('#betAmount').val()
-  $('#result').html("You bet: "+this.bet)
-  this.cash -= this.bet
-  $('#cashAmount').html(this.cash)
-  $('#betAmount').val("")
-  this.allCards  = this.mapCards();
-  this.fiveCards = [];
-  this.heldCards = [];
-  $('#cards').html("")
-  this.getRandomCardsSet(5)
-  console.log(this.fiveCards)
-  $('.playingCards').on("click", this.holdCard.bind(this))
+  if(this.cash <= 0){
+    $('#playHand').hide()
+    $('#dealNext').hide()
+    $('#cards').html("<h1 id='moneyOut'>You ran out of moneyyss!</h1>")
+  }else{
+    $('#betAmount').hide()
+    $('#playHand').hide()
+    $('#dealNext').show()
+    this.bet = $('#betAmount').val()
+    $('#result').html("<span class='strong'>You bet:</span> "+this.bet)
+    this.cash -= this.bet
+    $('#cashAmount').html(this.cash)
+    $('#betAmount').val("")
+    this.allCards  = this.mapCards();
+    this.fiveCards = [];
+    this.heldCards = [];
+    $('#cards').html("")
+    this.getRandomCardsSet(5)
+    console.log(this.fiveCards)
+    $('.playingCards').on("click", this.holdCard.bind(this))
+  }
 }
 
 myGame.prototype.dealNextHand = function(){
+  $('#betAmount').show()
+  $('#playHand').show()
+  $('#dealNext').hide()
   this.fiveCards = []
   $('#cards').html("")
   for (var i = 0; i < this.heldCards.length; i++) {
     this.fiveCards.push(this.heldCards[i])
-    $("#cards").append("<li><img class='playingCards' id='"+this.heldCards[i]+"'src='./images/classic-cards/"+this.heldCards[i]+".png' width='50'></li>")
+    $("#cards").append("<li><img class='playingCards' id='"+this.heldCards[i]+"'src='./images/classic-cards/"+this.heldCards[i]+".png'></li>")
   };
   this.getRandomCardsSet(5-this.heldCards.length);
 
   this.checkHand();
+
+
+
+  if(this.cash <= 0){
+    $('#playHand').hide()
+    $('#dealNext').hide()
+    $('#betAmount').hide()
+    setTimeout(function(){ 
+      $('#cards').html("<h1 id='moneyOut'>You ran out of moneyyss!</h1>")
+    },3000);
+  }
 }
 
 myGame.prototype.checkHand = function(){
   var result = $('#result')
-  if (this.flush()){
-    result.html("Got a flush!")
+  if(this.fullHouse()){
+
+  }else if (this.flush()){
+    result.html("Got a flush, you win "+(this.bet*15))
     console.log("Got a flush!");
     this.cash += (this.bet*15)
   }else if(this.straight()){
-    result.html("Got a straight!")
+    result.html("Got a straight, you win "+(this.bet*10))
     console.log("Got a straight!");
     this.cash += (this.bet*10)
   }else if(this.threeOfAKind()){
-    result.html("Got three of a kind!")
+    result.html("Got three of a kind, you win "+(this.bet*5))
     console.log("Got three of a kind!");
     this.cash += (this.bet*5)
   }else if(this.twoPair()){
-    result.html("Got two pair")
+    result.html("Got two pair, you win "+(this.bet*2))
     console.log("Got two pair");
     this.cash += (this.bet*2)
   }else if(this.pair()){
-    result.html("Got a pair")
+    result.html("Got a pair, you win "+(this.bet*1.5))
     console.log("Got a pair")
     this.cash += (this.bet*1.5)
   }
@@ -125,9 +151,14 @@ myGame.prototype.flush = function(){
   for (var i = 0; i < this.fiveCards.length; i++) {
     arr.push(parseInt(this.fiveCards[i].split(/_/)[0]))
   };
-  if(arr[0]===[1] && arr[1]===[2] && arr[2]===[3] && arr[3]===[4]){
+  console.log(arr)
+  if(arr[0]===arr[1] && arr[1]===arr[2] && arr[2]===arr[3] && arr[3]===arr[4]){
     return true
   }
+}
+
+myGame.prototype.fullHouse = function(){
+  
 }
 
 myGame.prototype.countInArray = function(array, what) {
@@ -141,8 +172,14 @@ myGame.prototype.countInArray = function(array, what) {
 }
 
 myGame.prototype.holdCard = function(){
-  $(event.currentTarget).addClass('chosen-card')
-  this.heldCards.push(event.currentTarget.id)
+  if($(event.currentTarget).hasClass('chosen-card')){
+    var index = this.heldCards.indexOf(event.currentTarget.id)
+    $(event.currentTarget).removeClass('chosen-card')
+    this.heldCards.splice(event.currentTarget, 1)
+  }else{
+    $(event.currentTarget).addClass('chosen-card')
+    this.heldCards.push(event.currentTarget.id)
+  }
 }
 
 myGame.prototype.mapCards = function(){
@@ -160,7 +197,7 @@ myGame.prototype.getRandomCardsSet = function(numberOfCards){
     var cardNumber = Math.floor(Math.random() * this.allCards.length)
     var thisCard   = this.allCards.splice(cardNumber, 1)[0]
     this.fiveCards.push(thisCard)
-    $("#cards").append("<li><img class='playingCards' id='"+thisCard+"'src='./images/classic-cards/"+thisCard+".png' width='50'></li>")
+    $("#cards").append("<li><img class='playingCards' id='"+thisCard+"'src='./images/classic-cards/"+thisCard+".png'></li>")
   };
 }
 

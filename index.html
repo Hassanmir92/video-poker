@@ -3,17 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title> Video Poker | Hassan Mir </title>
+  <link href='https://fonts.googleapis.com/css?family=Domine:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 </head>
-<h2>Cash: <span id="cashAmount"></span></h2>
-<h2 id="result"></h2>
-<input id="betAmount" type="text" value="">
 <body>
-  <button id="playHand">Play</button>
-  <button id="dealNext">Play Next Hand</button>
-  <ul id="cards">
-  </ul>
+  <main>
+    <h1>Video Poker</h1>
+    <h2><span class="strong">Cash:</span> <span id="cashAmount"></span></h2>
+    <h2 id="result"></h2>
+    <div class="inputs">
+      <input id="betAmount" type="text" value="">
+      <button id="playHand">Play</button>
+      <button id="dealNext">Deal</button>
+    </div>
+    <ul id="cards">
+    </ul>
+  </main>
 </body>
 </html>
