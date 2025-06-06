@@ -57,7 +57,7 @@ myGame.prototype.dealNextHand = function(){
     $('#playHand').hide()
     $('#dealNext').hide()
     $('#betAmount').hide()
-    setTimeout(function(){ 
+    setTimeout(function(){
       $('#cards').html("<h1 id='moneyOut'>You ran out of moneyyss!</h1>")
     },3000);
   }
@@ -142,7 +142,9 @@ myGame.prototype.straight = function(){
   for (var i = 0; i < this.fiveCards.length; i++) {
     arr.push(parseInt(this.fiveCards[i].split(/_/)[1]))
   };
-  arr.sort();
+
+  arr.sort((a, b) => { return a-b });
+
   if(arr[0]===arr[1]-1 && arr[1]===arr[2]-1 && arr[2]===arr[3]-1 && arr[3]===arr[4]-1){
     return true
   }
@@ -153,7 +155,7 @@ myGame.prototype.flush = function(){
   for (var i = 0; i < this.fiveCards.length; i++) {
     arr.push(parseInt(this.fiveCards[i].split(/_/)[0]))
   };
-  console.log(arr)
+
   if(arr[0]===arr[1] && arr[1]===arr[2] && arr[2]===arr[3] && arr[3]===arr[4]){
     return true
   }
